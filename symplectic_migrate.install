@@ -1,0 +1,13 @@
+<?php
+
+/** 
+ * @file 
+ * Symplectic Migrate Module
+ * Publication migration from Symplectic
+ */
+function migrate_bioarray_disable(){
+  Migration::deregisterMigration('SymplecticPubs');	
+  Migration::deregisterMigration('SymplecticFavPubs');
+  Migration::deregisterMigration('SymplecticPages');
+  return;
+}

@@ -1,0 +1,71 @@
+<?php 
+ 
+/** 
+* @file 
+ * Symplectic Migrate Module
+ * Publication migration from Symplectic
+ */
+ 
+/**
+ * Implements hook_help().
+ */
+function symplectic_migrate_help($path, $arg) {
+  switch($path) {
+    case 'admin/help#symplectic_migrate':
+	  return '<p>'.t('This module permits to migrate publications from Symplectic, using XML files.').'</p>';
+  }
+}
+
+/**
+* Implements hook_cron().
+*/
+/*function symplectic_migrate_cron() {
+
+  watchdog('symplectic_migrate','Started Cron function .',array(),WATCHDOG_INFO);
+  // Load symplectic_migrate.drush.inc from the symplectic_migrate module.
+    module_load_include('inc', 'symplectic_migrate', 'symplectic_migrate.admin');
+	
+  $result = db_select('node', 'n')
+       ->fields('n', array('title', 'nid'))
+	   ->condition('type', 'principal_investigator')
+       ->execute();
+	   
+  foreach($result as $record) {  
+    get_symplectic_publications($record->nid,$fav);
+  }  
+ 
+  watchdog('symplectic_migrate','Finished Cron function .',array(),WATCHDOG_INFO);
+}
+*/
+/**
+ * Implements hook_menu().
+ */
+ 
+function symplectic_migrate_menu() {
+  $items['admin/config/services/symplectic_migrate'] = array(
+	'title' => 'Symplectic migrate settings',
+	'description' => 'Settings for module Symplectic Migrate',
+	'page callback' => 'drupal_get_form',
+	'page arguments' => array('symplectic_migrate_admin_settings'),
+	'access callback' => 'user_access',
+	'access arguments' => array('administer site configuration'),
+	'type' => MENU_CALLBACK,
+	'file' => 'symplectic_migrate.admin.inc',
+  );
+  return $items;  
+}
+
+/**
+ * Implements hook_watchdog()
+ */
+function symplectic_migrate_watchdog(array $log_entry){
+  if($log_entry['type']=='symplectic_migrate'){
+    $file = DRUPAL_ROOT .'/' . drupal_get_path('module', 'symplectic_migrate') .'/logs/symplectic_migrate.log';
+	$myfile = fopen($file, "a+") or die("Unable to open file!");
+	$data=date("Y-m-d H:i:s",$log_entry['timestamp']);
+	fwrite($myfile, $data." ");
+	fwrite($myfile, t($log_entry['message'],$log_entry['variables']));
+	fwrite($myfile, "\n");
+	fclose($myfile);
+  }  
+}

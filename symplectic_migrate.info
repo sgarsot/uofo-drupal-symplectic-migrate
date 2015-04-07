@@ -1,0 +1,23 @@
+name = "Symplectic Migrate" 
+description = "Module for Symplectic Publication migrate" 
+package = SGC Package 
+core = 7.x 
+
+dependencies[] = taxonomy
+dependencies[] = migrate
+dependencies[] = link
+dependencies[] = entityreference
+dependencies[] = entity
+dependencies[] = ctools
+dependencies[] = features
+
+files[] = symplectic_migrate.module 
+files[] = symplectic_migrate.install
+files[] = symplectic_migrate_class.inc
+files[] = symplectic_migrate_fav_class.inc
+files[] = symplectic_migrate_pages_class.inc
+files[] = symplectic_migrate.drush.inc
+files[] = symplectic_migrate.migrate.inc
+files[] = symplectic_migrate.admin.inc
+configure = admin/config/services/symplectic_migrate
+
